@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { Card, Button } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom';
 
 
 export default function LoginComponent() {
@@ -8,6 +9,9 @@ export default function LoginComponent() {
   const emailRef = useRef();
   const pwdRef = useRef()
   const pwdAgainRef = useRef()
+  const navigate = useNavigate()
+
+  var token = ''
 
   async function submitHandler(e) {
     e.preventDefault();
@@ -36,9 +40,10 @@ export default function LoginComponent() {
       )
 
       const res1 = await res.json()
-      console.log(res1)
-
+      // console.log(res1)
+      token = res1.idToken
       alert("Successfully created ")
+      setNewUser(false)
       emailRef.current.value = '';
       pwdAgainRef.current.value = '';
       pwdRef.current.value = ''
@@ -60,12 +65,21 @@ export default function LoginComponent() {
       })
 
       const res1 = await res.json();
-      console.log(res1)
-      alert('valid credintails , signed in')
-      pwdRef.current.value = ''
-      emailRef.current.value = '';
-    }
+      // console.log(res1)
+      token = res1.idToken
+      if (token !== undefined) {
+        alert('valid credintails , signed in')
+        navigate('/homepage')
+      }
+      else
+      {
+        alert("invalid credintials!!!")
+        emailRef.current.value='';
+        pwdRef.current.value=''
+      }
 
+    }
+    console.log(token)
   }
 
   function setTrue() {
