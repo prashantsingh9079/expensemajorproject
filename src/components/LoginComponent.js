@@ -44,6 +44,7 @@ export default function LoginComponent() {
       // console.log(res1)
       token = res1.idToken
       authCtx.setLogin(token)
+      localStorage.setItem("token",token)
       alert("Successfully created ")
       setNewUser(false)
       emailRef.current.value = '';
@@ -70,6 +71,7 @@ export default function LoginComponent() {
       // console.log(res1)
       token = res1.idToken
       authCtx.setLogin(token)
+      localStorage.setItem("token",token)
       if (token !== undefined) {
         alert('valid credintails , signed in')
         navigate('/homepage')
@@ -97,7 +99,7 @@ export default function LoginComponent() {
 
   return (
     <>
-      <Card style={{ textAlign: 'center', marginTop: '15rem', marginLeft: '20rem', marginRight: '20rem', marginBottom: '20rem', padding: '3rem', borderRadius: '3rem', background: 'lightgray' }}>
+      <Card style={{ textAlign: 'center', marginTop: '8rem', marginLeft: '20rem', marginRight: '20rem', marginBottom: '20rem', padding: '3rem', borderRadius: '3rem', background: 'lightgray' }}>
         <h1>{newUser ? 'Sign Up' : 'Sign In'}</h1>
         <br />
         <form style={{ listStyle: 'none' }} >
