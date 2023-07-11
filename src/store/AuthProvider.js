@@ -15,10 +15,16 @@ export default function AuthProvider(props) {
         setToken(token)
     }
 
+    function logout()
+    {
+      setToken(null)
+    }
+
     const val = {
         token:token,
         isLogin:checkIsLogin,
-        setLogin:setLogin
+        setLogin:setLogin,
+        logout:logout
     }
 
 

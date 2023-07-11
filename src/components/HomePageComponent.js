@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Nav, Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
+import AuthContext from '../store/auth-context';
 
 export default function HomePageComponent() {
+
+  const authCtx = useContext(AuthContext)
+  const navigate = useNavigate();
 
   async function verifyHandler(e) {
     e.preventDefault();
@@ -32,11 +36,21 @@ export default function HomePageComponent() {
 
   }
 
+  function logout()
+  {
+    localStorage.removeItem("token");
+    authCtx.logout()
+    console.log(authCtx.token);
+    navigate('/')
+    console.log(authCtx.token)
+  }
+
   return (
     <>
       <Nav style={{ color: 'white', background: 'grey', display: 'flex', justifyContent: 'space-between' }}>
         <h3><i>Welcome to Expense Tracker!!!</i></h3>
         <h3><i>Your Profile is incomplete.</i><Link to='/profile'><i>Complete Now</i></Link></h3>
+        <Button onClick={logout} style={{background:'coral',color:'black',borderColor:'red',borderWidth:'3px',margin:'6px'}}>Logout</Button>
       </Nav>
       <br />
       <h5 style={{ marginLeft: '4rem' }}>Please Verify your Email ID</h5>

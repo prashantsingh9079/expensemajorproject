@@ -5,7 +5,8 @@ const AuthContext = React.createContext(
     {
         token:'',
         isLogin:()=>{},
-        setLogin:()=>{}
+        setLogin:()=>{},
+        logout:()=>{}
     }
     )
 

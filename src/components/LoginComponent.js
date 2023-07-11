@@ -13,7 +13,7 @@ export default function LoginComponent() {
   const navigate = useNavigate()
 
   var token = ''
-
+  console.log(authCtx.token)
   async function submitHandler(e) {
     e.preventDefault();
     if (newUser) {
