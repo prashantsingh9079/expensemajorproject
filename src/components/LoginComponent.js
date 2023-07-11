@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useContext } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
-
+import AuthContext from '../store/auth-context';
 
 export default function LoginComponent() {
 
+  const authCtx = useContext(AuthContext)
   const [newUser, setNewUser] = useState(true)
   const emailRef = useRef();
   const pwdRef = useRef()
@@ -42,6 +43,7 @@ export default function LoginComponent() {
       const res1 = await res.json()
       // console.log(res1)
       token = res1.idToken
+      authCtx.setLogin(token)
       alert("Successfully created ")
       setNewUser(false)
       emailRef.current.value = '';
@@ -67,6 +69,7 @@ export default function LoginComponent() {
       const res1 = await res.json();
       // console.log(res1)
       token = res1.idToken
+      authCtx.setLogin(token)
       if (token !== undefined) {
         alert('valid credintails , signed in')
         navigate('/homepage')
