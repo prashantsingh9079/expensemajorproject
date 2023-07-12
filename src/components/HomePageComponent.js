@@ -56,6 +56,7 @@ export default function HomePageComponent() {
       <h5 style={{ marginLeft: '4rem' }}>Please Verify your Email ID</h5>
       <br />
       <Button onClick={verifyHandler} style={{ marginLeft: '4rem' }}>Verify email</Button>
+      <Link to='/expense'>Click to add Expense</Link>
     </>
   )
 }
