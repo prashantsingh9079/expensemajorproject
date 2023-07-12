@@ -95,6 +95,11 @@ export default function LoginComponent() {
     setNewUser(false)
   }
 
+  function resetPwd()
+  {
+    navigate('/reset')
+  }
+
 
 
   return (
@@ -113,6 +118,7 @@ export default function LoginComponent() {
         </form>
         <br />
         <br />
+        {!newUser && <i onClick={resetPwd} style={{color:'red'}} >Forget Password ?</i>}
         {newUser && <i onClick={setFalse}>Already have a account click here</i>}
         {!newUser && <i onClick={setTrue}>Create a account</i>}
       </Card>
