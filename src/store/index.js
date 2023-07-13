@@ -32,15 +32,41 @@ const expenseSlice = createSlice({
         {
             state.items.push(action.payload.item)
             console.log(state.items)
+        },
+        deleteItem(state,action)
+        {
+            
+        },
+        removeItem(state,action)
+        {
+
+        }
+    }
+})
+
+const themeSlice = createSlice({
+    name:'theme',
+    initialState:{clr:'white'},
+    reducers:{
+        toggleTheme(state)
+        {
+            if(state.clr==='white')
+            {
+                state.clr='black'
+            }
+            else{
+                state.clr='white'
+            }
         }
     }
 })
 
 const store = configureStore({
-    reducer:{auth:authSlice.reducer, expense:expenseSlice.reducer}
+    reducer:{auth:authSlice.reducer, expense:expenseSlice.reducer, theme:themeSlice.reducer}
 })
 
 export const authAction = authSlice.actions
 export const expenseAction = expenseSlice.actions
+export const themeAction = themeSlice.actions
 
 export default store;

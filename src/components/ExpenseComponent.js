@@ -2,11 +2,14 @@ import React, { useRef, useState, useEffect } from 'react'
 import { Card, Button, Nav, Table } from 'react-bootstrap'
 import axios from 'axios'
 import { useDispatch,useSelector } from 'react-redux';
-import { expenseAction } from '../store';
+import { expenseAction, themeAction } from '../store';
+import {CSVLink} from 'react-csv'
 
 export default function ExpenseComponent() {
    const itemState = useSelector(state => state.expense.items)
-    
+
+   const [themeButton,setThemeButton] = useState(false) 
+   const theme = useSelector(state => state.theme.clr)
     const dispatch = useDispatch()
     const descRef = useRef();
     const amountRef = useRef();
@@ -114,11 +117,36 @@ export default function ExpenseComponent() {
 
     }
 
+    function themeChanger()
+    {
+        setThemeButton((p)=>!p)
+    }
+
+    function changeThemeHandler()
+    {
+        dispatch(themeAction.toggleTheme())
+    }
+
+    const dataCSV = arr;
+        console.log(dataCSV)
+        const headers = [
+            {label:'Amount', key:'amount'},
+            {label:'Category',key:'category'},
+            {label:'Description',key:'description'}
+        ]
+        const csvlink = {
+            filename:'expense.csv',
+            header:headers,
+            data:dataCSV
+        }
+
 
     return (
-        <>
-            <Nav style={{ background: 'grey' }}>
-                <h2 style={{ color: 'white', marginLeft: '42rem' }} >Add Expense</h2>
+        <div style={{background:theme}}>
+            <Nav style={{ background: 'grey',justifyContent:'space-between' }}>
+                <h2 style={{ color: 'white' }} >Add Expense</h2>
+                {themeButton && <Button onClick={changeThemeHandler}> Toggle Theme</Button>}
+                {themeButton && <CSVLink {...csvlink} style={{color:'green'}}>Download expenses in CSV</CSVLink>  }
             </Nav>
 
             <Card style={{ margin: '10rem', padding: '3rem', background: 'skyblue', }}>
@@ -162,7 +190,7 @@ export default function ExpenseComponent() {
                                         <td><Button onClick={deleteItem}>Delete</Button></td>
                                         <td><Button onClick={editItem}>Edit</Button></td>
                                         {!i.flag && <td><i>Not Applicable for premium</i></td>}
-                                        {i.flag && <td><Button >Activate Premium</Button></td>}
+                                        {i.flag && <td><Button onClick={themeChanger} >Activate Premium</Button></td>}
                                     </tr>
                                 )
                             }
@@ -171,6 +199,6 @@ export default function ExpenseComponent() {
                     </Table>
                 </div>
             }
-        </>
+        </div>
     )
 }
