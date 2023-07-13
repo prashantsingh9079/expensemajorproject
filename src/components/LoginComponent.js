@@ -2,6 +2,8 @@ import React, { useRef, useState, useContext } from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../store/auth-context';
+import {  useSelector,useDispatch } from 'react-redux';
+import { authAction } from '../store';
 
 export default function LoginComponent() {
 
@@ -11,9 +13,11 @@ export default function LoginComponent() {
   const pwdRef = useRef()
   const pwdAgainRef = useRef()
   const navigate = useNavigate()
+  useSelector(state=>state.auth.login)
+  const dispatch = useDispatch()
 
   var token = ''
-  console.log(authCtx.token)
+  // console.log(authCtx.token)
   async function submitHandler(e) {
     e.preventDefault();
     if (newUser) {
@@ -43,6 +47,7 @@ export default function LoginComponent() {
       const res1 = await res.json()
       // console.log(res1)
       token = res1.idToken
+      dispatch(authAction.login({token}))
       authCtx.setLogin(token)
       localStorage.setItem("token",token)
       alert("Successfully created ")
@@ -70,6 +75,7 @@ export default function LoginComponent() {
       const res1 = await res.json();
       // console.log(res1)
       token = res1.idToken
+      dispatch(authAction.login({token}))
       authCtx.setLogin(token)
       localStorage.setItem("token",token)
       if (token !== undefined) {

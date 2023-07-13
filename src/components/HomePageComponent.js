@@ -2,11 +2,15 @@ import React, { useContext } from 'react'
 import { Nav, Button } from 'react-bootstrap'
 import { Link,useNavigate } from 'react-router-dom'
 import AuthContext from '../store/auth-context';
+import { authAction } from '../store';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function HomePageComponent() {
 
   const authCtx = useContext(AuthContext)
   const navigate = useNavigate();
+  useSelector(state=>state.auth.logout)
+  const dispatch = useDispatch();
 
   async function verifyHandler(e) {
     e.preventDefault();
@@ -38,8 +42,10 @@ export default function HomePageComponent() {
 
   function logout()
   {
+    dispatch(authAction.logout())
     localStorage.removeItem("token");
     authCtx.logout()
+
     console.log(authCtx.token);
     navigate('/')
     console.log(authCtx.token)

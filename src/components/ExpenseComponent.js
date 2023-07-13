@@ -1,14 +1,21 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { Card, Button, Nav, Table } from 'react-bootstrap'
 import axios from 'axios'
+import { useDispatch,useSelector } from 'react-redux';
+import { expenseAction } from '../store';
 
 export default function ExpenseComponent() {
+   const itemState = useSelector(state => state.expense.items)
+    
+    const dispatch = useDispatch()
     const descRef = useRef();
     const amountRef = useRef();
     const categoryRef = useRef();
     const [arr, setArr] = useState([])
     useEffect(() => {
         async function fetchData() {
+
+           
 
             const res = await axios.get("https://expensetracker-deb9a-default-rtdb.firebaseio.com/expense.json")
             // console.log(res)
@@ -32,7 +39,14 @@ export default function ExpenseComponent() {
 
     function submitHandler(e) {
         e.preventDefault();
-        const formData = { desc: descRef.current.value, amount: amountRef.current.value, category: categoryRef.current.value,id:Math.random() };
+        var flag=0;
+        var formData = { desc: descRef.current.value, amount: amountRef.current.value, category: categoryRef.current.value,id:Math.random() };
+        if(Number(formData.amount) > 10000)
+        {
+            flag=1;
+            formData={...formData,flag:1}
+        }
+        console.log(flag)
         axios.post("https://expensetracker-deb9a-default-rtdb.firebaseio.com/expense.json", formData)
         console.log(formData)
         setArr((p) => {
@@ -40,12 +54,14 @@ export default function ExpenseComponent() {
             newArr.push(formData)
             return newArr
         })
+        dispatch(expenseAction.addItem({item:formData}))
+        console.log(itemState)
     }
 
     async function deleteItem(e) {
         e.preventDefault();
         // console.log(e.target.parentNode.parentNode)
-        console.log(e.target.parentNode.parentNode.children[1].textContent)
+        console.log(e.target.parentNode.parentNode.children)
         const tamount = (e.target.parentNode.parentNode.children[1].textContent)
         const res = await axios.get("https://expensetracker-deb9a-default-rtdb.firebaseio.com/expense.json")
         console.log(res.data)
@@ -95,21 +111,7 @@ export default function ExpenseComponent() {
 
         
         await axios.delete("https://expensetracker-deb9a-default-rtdb.firebaseio.com/expense/"+_id+".json/")
-        // const re = await axios.post("https://expensetracker-deb9a-default-rtdb.firebaseio.com/expense.json/",{
-        //     desc:descRef.current.value,
-        //     amount:amountRef.current.value,
-        //     category:categoryRef.current.value
-        // })
-        
-        // console.log(re)
-        // setArr((p) => {
-        //     let na = []
-        //     for (let i in r.data) {
-        //         na.push(r.data[i])
-        //     }
 
-        //     return na;
-        // })
     }
 
 
@@ -147,6 +149,7 @@ export default function ExpenseComponent() {
                                 <th>Item Category</th>
                                 <th></th>
                                 <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -158,6 +161,8 @@ export default function ExpenseComponent() {
                                         <td>{i.category}</td>
                                         <td><Button onClick={deleteItem}>Delete</Button></td>
                                         <td><Button onClick={editItem}>Edit</Button></td>
+                                        {!i.flag && <td><i>Not Applicable for premium</i></td>}
+                                        {i.flag && <td><Button >Activate Premium</Button></td>}
                                     </tr>
                                 )
                             }
