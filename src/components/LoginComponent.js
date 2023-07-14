@@ -49,7 +49,8 @@ export default function LoginComponent() {
       token = res1.idToken
       dispatch(authAction.login({token}))
       authCtx.setLogin(token)
-      localStorage.setItem("token",token)
+      // localStorage.setItem("token",token)
+      // localStorage.setItem("email",emailRef.current.value)
       alert("Successfully created ")
       setNewUser(false)
       emailRef.current.value = '';
@@ -77,7 +78,10 @@ export default function LoginComponent() {
       token = res1.idToken
       dispatch(authAction.login({token}))
       authCtx.setLogin(token)
+      var updatedEmail = emailRef.current.value.split('@')[0]
+      console.log(updatedEmail)
       localStorage.setItem("token",token)
+      localStorage.setItem("email",updatedEmail)
       if (token !== undefined) {
         alert('valid credintails , signed in')
         navigate('/homepage')

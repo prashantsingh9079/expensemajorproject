@@ -44,6 +44,7 @@ export default function HomePageComponent() {
   {
     dispatch(authAction.logout())
     localStorage.removeItem("token");
+    localStorage.removeItem("email")
     authCtx.logout()
 
     console.log(authCtx.token);
@@ -61,8 +62,10 @@ export default function HomePageComponent() {
       <br />
       <h5 style={{ marginLeft: '4rem' }}>Please Verify your Email ID</h5>
       <br />
+      
       <Button onClick={verifyHandler} style={{ marginLeft: '4rem' }}>Verify email</Button>
-      <Link to='/expense'>Click to add Expense</Link>
+      <Link style={{margin:'34rem'}} to='/expense'>Click to add Expense</Link>
+      
     </>
   )
 }

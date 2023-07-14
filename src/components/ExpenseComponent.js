@@ -7,7 +7,9 @@ import {CSVLink} from 'react-csv'
 
 export default function ExpenseComponent() {
    const itemState = useSelector(state => state.expense.items)
-
+    const urlEmail = `https://expensetracker-deb9a-default-rtdb.firebaseio.com/${localStorage.getItem('email')}/expense.json`
+    // console.log(urlEmail)
+    // const urlDel = `https://expensetracker-deb9a-default-rtdb.firebaseio.com/expense.json/${localStorage.getItem('email')}/expense/${_id}.json`
    const [themeButton,setThemeButton] = useState(false) 
    const theme = useSelector(state => state.theme.clr)
     const dispatch = useDispatch()
@@ -20,7 +22,7 @@ export default function ExpenseComponent() {
 
            
 
-            const res = await axios.get("https://expensetracker-deb9a-default-rtdb.firebaseio.com/expense.json")
+            const res = await axios.get(urlEmail)
             // console.log(res)
             if (res.status === 200) {
                 setArr((p) => {
@@ -38,7 +40,7 @@ export default function ExpenseComponent() {
 
         }
         fetchData()
-    }, [arr])
+    }, [arr,urlEmail])
 
     function submitHandler(e) {
         e.preventDefault();
@@ -50,7 +52,7 @@ export default function ExpenseComponent() {
             formData={...formData,flag:1}
         }
         console.log(flag)
-        axios.post("https://expensetracker-deb9a-default-rtdb.firebaseio.com/expense.json", formData)
+        axios.post(urlEmail, formData)
         console.log(formData)
         setArr((p) => {
             let newArr = [...p];
@@ -66,7 +68,7 @@ export default function ExpenseComponent() {
         // console.log(e.target.parentNode.parentNode)
         console.log(e.target.parentNode.parentNode.children)
         const tamount = (e.target.parentNode.parentNode.children[1].textContent)
-        const res = await axios.get("https://expensetracker-deb9a-default-rtdb.firebaseio.com/expense.json")
+        const res = await axios.get(urlEmail)
         console.log(res.data)
         for (let i in res.data) {
             if (res.data[i]['amount'] === tamount) {
@@ -75,7 +77,9 @@ export default function ExpenseComponent() {
                 break;
             }
         }
-        const resd = await axios.delete("https://expensetracker-deb9a-default-rtdb.firebaseio.com/expense/" + _id + ".json/")
+        // const urlEmail = `https://expensetracker-deb9a-default-rtdb.firebaseio.com/expense.json/${localStorage.getItem('email')}/expense.json`
+        // "https://expensetracker-deb9a-default-rtdb.firebaseio.com/expense/" + _id + ".json/"
+        const resd = await axios.delete(`https://expensetracker-deb9a-default-rtdb.firebaseio.com/${localStorage.getItem('email')}/expense/${_id}.json`)
         console.log(resd)
         setArr((p) => {
             let na = []
@@ -91,7 +95,7 @@ export default function ExpenseComponent() {
         console.log(e.target.parentNode.parentNode.children[0].textContent)
         const identifier  = e.target.parentNode.parentNode.children[0].textContent
 
-        const r  = await axios.get("https://expensetracker-deb9a-default-rtdb.firebaseio.com/expense.json");
+        const r  = await axios.get(urlEmail);
         console.log(r.data)
         var av=''
         var dv=''
@@ -113,7 +117,7 @@ export default function ExpenseComponent() {
         categoryRef.current.value=cv;
 
         
-        await axios.delete("https://expensetracker-deb9a-default-rtdb.firebaseio.com/expense/"+_id+".json/")
+        await axios.delete(`https://expensetracker-deb9a-default-rtdb.firebaseio.com/${localStorage.getItem('email')}/expense/${_id}.json`)
 
     }
 
